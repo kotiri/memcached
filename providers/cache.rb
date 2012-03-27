@@ -1,8 +1,8 @@
 #
 # Cookbook Name:: memcached
-# Definition:: memcached_instance
+# Provider:: cache
 #
-# Copyright 2009, Opscode, Inc.
+# Copyright 2009-2012, Opscode, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,17 +16,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
-define :memcached_instance do
+actions :create do
   include_recipe "memcached"
 
-  runit_service "memcached-#{params['name']}" do
+  runit_service "memcached-#{new_resource.name}" do
     template_name "memcached"
     cookbook "memcached"
     options({
       :memory => node['memcached']['memory'],
       :port => node['memcached']['port'],
-      :user => node['memcached']['user']}.merge(params)
+      :user => node['memcached']['user']}.merge(new_resource.to_hash)
     )
   end
+  new_resource.updated_by_last_action(true)
 end
