@@ -16,8 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-actions :create do
-  include_recipe "memcached"
+action :create do
 
   runit_service "memcached-#{new_resource.name}" do
     template_name "memcached"
